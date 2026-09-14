@@ -1,34 +1,28 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodSchema, ZodError } from "zod/v3";
+import { BookCreateSchema, BookIDParamSchema } from "../dto/book.schema";
 
-export const validateBody = (schema: ZodSchema) => {
+export const validateBody = () => {
   (req: Request, res: Response, next: NextFunction) => {
-    try {
-      req.body = schema.parse(req.body);
-      next();
-    } catch (error) {
-      const zerr = error as ZodError;
-      return res.status(400).json({
-        success: false,
-        msg: "Body inválido",
-        errors: zerr.flatten(),
+    const result = BookCreateSchema.safeParse(req.body);
+    if (!result.success) {
+      res.status(400).json({
+        errors: result.error.issues,
       });
+      return;
     }
+    next();
   };
 };
 
-export const validateParams = (schema: ZodSchema) => {
+export const validateParams = () => {
   (req: Request, res: Response, next: NextFunction) => {
-    try {
-      req.params = schema.parse(req.params);
-      next();
-    } catch (error) {
-      const zerr = error as ZodError;
-      return res.status(400).json({
-        success: false,
-        msg: "Parametros invalidos",
-        errors: zerr.flatten(),
+    const result = BookIDParamSchema.safeParse(req.params);
+    if (!result.success) {
+      res.status(400).json({
+        errors: result.error.issues,
       });
+      return;
     }
+    next();
   };
 };

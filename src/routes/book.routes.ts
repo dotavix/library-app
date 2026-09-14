@@ -1,12 +1,17 @@
 import { Router } from "express";
-import { getBooks } from "../controllers/book.controller";
+import {
+  createBook,
+  deleteBook,
+  editBook,
+  getBooks,
+  getBooksById,
+} from "../controllers/book.controller";
+import { validateBody, validateParams } from "../middlewares/validate";
 
-const bookRouter = Router();
+export const bookRouter = Router();
 
 bookRouter.get("/", getBooks);
-bookRouter.get("/:id", getBooks);
-bookRouter.post("/", getBooks);
-bookRouter.put("/", getBooks);
-bookRouter.delete("/", getBooks);
-
-export default bookRouter;
+bookRouter.get("/:id", validateParams, getBooksById);
+bookRouter.post("/", validateBody, createBook);
+bookRouter.put("/:id", validateParams, validateBody, editBook);
+bookRouter.delete("/:id", validateParams, deleteBook);

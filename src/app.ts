@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import bookRouter from "./routes/book.routes";
+import { bookRouter } from "./routes/book.routes";
 
 export const app = express();
 

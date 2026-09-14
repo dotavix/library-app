@@ -1,6 +1,4 @@
 import { Schema, model, InferSchemaType, Types } from "mongoose";
-import { title } from "node:process";
-import { trim } from "zod";
 
 const bookSchema = new Schema(
   {
